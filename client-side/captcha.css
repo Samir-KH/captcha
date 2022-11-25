@@ -1,0 +1,161 @@
+@font-face {
+    font-family: 'Roboto';
+    src: url('./font/Roboto-Regular.ttf');
+}
+@font-face {
+    font-family: 'IBM Plex Sans';
+    src: url('./font/IBMPlexSans-Bold.ttf');
+}
+
+.container{
+    margin: 50px auto;
+    width: 600px;
+    
+}
+
+.cpch-container-style{
+    font-family: 'Roboto', sans-serif;
+    border: 1px solid #c3c3c3;
+    background-color: #f1f1f1;
+    box-shadow: 2px 2px #dfdfdf;
+    padding: 5px;
+}
+
+.captcha-container{
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+    margin: 2px;
+    border-radius: 2px;
+    max-width: 350px;
+    min-width: 250px;
+    
+}
+
+.captcha-container .captcha-sub-container{
+    white-space: nowrap;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+}
+
+.captcha-container .captcha-sub-container .status-sign .checkbox{
+    width: 30px;
+    height: 30px;
+    border-radius: 2px;
+    margin: 10px;
+    outline: none;
+    background-color: white;
+    border: 3px solid #a3a3a3;
+    transition: 0.2s;
+}
+.captcha-container .captcha-sub-container .status-sign .checkbox:hover{
+    transform: scale(1.1);
+    cursor: pointer;
+}
+
+.captcha-container .captcha-sub-container .status-sign .checkbox:active{
+    transform: scale(0.9);
+}
+.captcha-container .captcha-logo{
+    width: 85px;
+    padding: 5px;
+}
+
+.captcha-container .captcha-logo img{
+    width: 50%;
+    margin: auto;
+    display: block;
+}
+
+.captcha-container .captcha-logo p{
+    margin: 5px;
+    font-size: 15px;
+    color: #515151;
+    font-family: 'IBM Plex Sans', sans-serif;
+}
+
+/*---------------------------------captcha-qst--------------------------*/
+
+.cpch-container-style{
+    width: 450px;
+}
+
+.cpch-container-style .test-container .test-title{
+    background-color: #4185de;
+    color: white;
+    padding: 10px 20px;
+    border-radius: 2px;
+    font-size: 20px;
+}
+
+.cpch-container-style .button{
+    border-radius: 2px;
+    outline: none;
+    border: none;
+    transition: 0.2s;
+}
+
+.cpch-container-style  .button:hover{
+    cursor: pointer;
+}
+
+.cpch-container-style  .button:active{
+    transform: scale(0.9);
+}
+
+.cpch-container-style .blue-button{
+    border-radius: 2px;
+    padding: 8px 20px;
+    font-size: 18px;
+    background-color: #4185de;
+    color: white;
+}
+
+.cpch-container-style .button-with-icon{
+    border-radius: 2px;
+    padding: 0;
+    background-color: transparent;
+    margin-left: 15px;
+}
+
+.cpch-container-style .button-with-icon img{
+    width: 30px;
+    margin: 5px;
+}
+.cpch-container-style .test-control-container{
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+ }
+
+ .cpch-container-style .test-container .test-imag-container{
+    background-color: #e7e7e7;
+    border-radius: 2px;
+    color: #626262;
+    padding: 5px;
+    margin: 5px 0;
+ }
+
+ .cpch-container-style .test-container .test-imag-container img{
+    margin: 0 auto;
+    display: block;
+ }
+
+ .cpch-container-style .test-container .test-imag-container {
+    margin: 0 auto;
+    display: block;
+ }
+
+ .cpch-container-style .test-container .test-response {
+    outline: none;
+    display: block;
+    font-size: 19px;
+    margin: 5px auto;
+    width: 100%;
+    padding: 5px;
+    color: #626262;
+    border: 1px solid #a8a8a8;
+    box-sizing: border-box;
+    
+ }

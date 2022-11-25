@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="captcha.css" />
+    <title>Document</title>
+</head>
+
+<body>
+
+    <div class="container">
+        <div class="captcha-container cpch-container-style">
+            <div class="captcha-sub-container">
+                <div class="status-sign">
+                    <button type="button" name="check-box" class="checkbox" title="captcha starter"></button>
+                </div>
+                <p>I am not a robot</p>
+            </div>
+            <div class="captcha-logo">
+                <img src="captcha-image.png" alt="Captcha">
+                <p>CapTcHA</p>
+            </div>
+        </div>
+    </div>
+
+    <div class="cpch-container-style captcha-qst">
+        <div class="test-container">
+            <div class="test-title">
+                <p>Solve the captcha puzzle below</p>
+                <p>Click verify when you are done</p>
+            </div>
+            <div class="test-container">
+                <div class="test-imag-container">
+                    <p>Type de code contained in this image</p>
+                    <img src="./test.png">
+                </div>
+                <input type="text" class="test-response">
+            </div>
+        </div>
+        <div class="test-control-container">
+            <button type="button" name="reload" class="button button-with-icon" title="captcha reload"><img
+                    src="rotation.png" alt="reload"></button>
+            <button type="button" name="verify" class="button blue-button" title="captcha verify">Verify</button>
+        </div>
+    </div>
+
+    <!--div class="container">
+        <div class="captcha-container">
+            <div class="captcha-sub-container">
+                <div class="status-sign">
+                    <button type="button" name="check-box" class="checkbox" title="captcha starter"></button>
+                </div>
+                <p>I am not a robot</p>
+            </div>
+            <div class="captcha-logo">
+                <img src="./reCAPTCHA-enterprise-min.png" alt="Captcha">
+                <p>captcha</p>
+            </div>
+        </div>
+    </div-->
+
+    <script difer src="captcha.js"></script>
+</body>
+
+</html>
