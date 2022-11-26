@@ -12,42 +12,84 @@
 <body>
 
     <div class="container">
-        <div class="captcha-container cpch-container-style">
-            <div class="captcha-sub-container">
-                <div class="status-sign">
-                    <button type="button" name="check-box" class="checkbox" title="captcha starter"></button>
+        <div class="capatcha-utility">
+            <div class="captcha-container cpch-container-style">
+                <div class="captcha-sub-container">
+                    <div class="status-sign">
+                        <button type="button" onclick="captcha.openTest()" name="check-box" class="checkbox"
+                            title="captcha starter"></button>
+                    </div>
+                    <p>I am not a robot</p>
                 </div>
-                <p>I am not a robot</p>
-            </div>
-            <div class="captcha-logo">
-                <img src="captcha-image.png" alt="Captcha">
-                <p>CapTcHA</p>
-            </div>
-        </div>
-    </div>
-
-    <div class="cpch-container-style captcha-qst">
-        <div class="test-container">
-            <div class="test-title">
-                <p>Solve the captcha puzzle below</p>
-                <p>Click verify when you are done</p>
-            </div>
-            <div class="test-container">
-                <div class="test-imag-container">
-                    <p>Type de code contained in this image</p>
-                    <img src="./test.png">
+                <div class="captcha-logo">
+                    <img src="captcha-image.png" alt="Captcha">
+                    <p>CapTcHA</p>
                 </div>
-                <input type="text" class="test-response">
+            </div>
+            <div class="cpch-container-style captcha-qst">
+                <span></span>
+                <div class="test-container">
+                    <div class="test-title">
+                        <p>Solve the captcha puzzle below</p>
+                        <p>Click verify when you are done</p>
+                    </div>
+                    <div class="test-container">
+                        <div class="test-imag-container">
+                            <p>Type de code contained in this image</p>
+                            <img src="./test.png">
+                        </div>
+                        <div>
+                            <p class="error-message">Wrong Ansewer! Try again</p>
+                        </div>
+                        <input type="text" class="test-response">
+                    </div>
+                </div>
+                <div class="test-control-container">
+                    <button type="button" name="reload" class="button button-with-icon" title="captcha reload"><img
+                            src="rotation.png" alt="reload"></button>
+                    <button type="button" name="verify" class="button blue-button" onclick="captcha.closeTest()"
+                        title="captcha verify">Verify</button>
+                </div>
             </div>
         </div>
-        <div class="test-control-container">
-            <button type="button" name="reload" class="button button-with-icon" title="captcha reload"><img
-                    src="rotation.png" alt="reload"></button>
-            <button type="button" name="verify" class="button blue-button" title="captcha verify">Verify</button>
-        </div>
-    </div>
 
-    <!--div class="container">
+        <div class="container">
+            <div class="capatcha-utility">
+                <div class="captcha-container cpch-container-style">
+                    <div class="captcha-sub-container">
+                        <div class="status-sign">
+                            <span class="loader cp-finishing"></span>
+                        </div>
+                        <p>I am not a robot</p>
+                    </div>
+                    <div class="captcha-logo">
+                        <img src="captcha-image.png" alt="Captcha">
+                        <p>CapTcHA</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="container">
+            <div class="capatcha-utility">
+                <div class="captcha-container cpch-container-style">
+                    <div class="captcha-sub-container">
+                        <div class="status-sign">
+                            <img class="check-mark" src="./checkmark.png">
+                        </div>
+                        <p>I am not a robot</p>
+                    </div>
+                    <div class="captcha-logo">
+                        <img src="captcha-image.png" alt="Captcha">
+                        <p>CapTcHA</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <span class="dot-loader"></span>
+
+        <!--div class="container">
         <div class="captcha-container">
             <div class="captcha-sub-container">
                 <div class="status-sign">
@@ -62,7 +104,7 @@
         </div>
     </div-->
 
-    <script difer src="captcha.js"></script>
+        <script difer src="captcha.js"></script>
 </body>
 
 </html>

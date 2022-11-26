@@ -2,26 +2,38 @@
     font-family: 'Roboto';
     src: url('./font/Roboto-Regular.ttf');
 }
+
 @font-face {
     font-family: 'IBM Plex Sans';
     src: url('./font/IBMPlexSans-Bold.ttf');
 }
 
-.container{
+.container {
     margin: 50px auto;
     width: 600px;
-    
 }
 
-.cpch-container-style{
+.capatcha-utility{
+    position: relative;
+}
+
+.cpch-container-style {
     font-family: 'Roboto', sans-serif;
     border: 1px solid #c3c3c3;
     background-color: #f1f1f1;
     box-shadow: 2px 2px #dfdfdf;
     padding: 5px;
+    top: 0;
+    left: 0;
+    position: absolute;
 }
 
-.captcha-container{
+.check-mark{
+    width: 40px;
+    margin: 10px
+}
+
+.captcha-container {
     display: flex;
     justify-content: space-between;
     width: 100%;
@@ -29,17 +41,21 @@
     border-radius: 2px;
     max-width: 350px;
     min-width: 250px;
-    
+    position: relative;
 }
 
-.captcha-container .captcha-sub-container{
+.captcha-container .captcha-sub-container {
     white-space: nowrap;
     display: flex;
     flex-direction: row;
     align-items: center;
 }
 
-.captcha-container .captcha-sub-container .status-sign .checkbox{
+.captcha-container .captcha-sub-container .status-sign {
+    width: 50px;
+}
+
+.captcha-container .captcha-sub-container .status-sign .checkbox {
     width: 30px;
     height: 30px;
     border-radius: 2px;
@@ -49,26 +65,28 @@
     border: 3px solid #a3a3a3;
     transition: 0.2s;
 }
-.captcha-container .captcha-sub-container .status-sign .checkbox:hover{
+
+.captcha-container .captcha-sub-container .status-sign .checkbox:hover {
     transform: scale(1.1);
     cursor: pointer;
 }
 
-.captcha-container .captcha-sub-container .status-sign .checkbox:active{
+.captcha-container .captcha-sub-container .status-sign .checkbox:active {
     transform: scale(0.9);
 }
-.captcha-container .captcha-logo{
+
+.captcha-container .captcha-logo {
     width: 85px;
     padding: 5px;
 }
 
-.captcha-container .captcha-logo img{
+.captcha-container .captcha-logo img {
     width: 50%;
     margin: auto;
     display: block;
 }
 
-.captcha-container .captcha-logo p{
+.captcha-container .captcha-logo p {
     margin: 5px;
     font-size: 15px;
     color: #515151;
@@ -77,11 +95,52 @@
 
 /*---------------------------------captcha-qst--------------------------*/
 
-.cpch-container-style{
+.captcha-qst {
     width: 450px;
+    position: absolute;
+    top: -35px;
+    left: 35px;
+    z-index: 2;
+    display: none;
+    transition: 0.2s;
 }
 
-.cpch-container-style .test-container .test-title{
+.show {
+    animation: 0.5s smooth_appear;
+    display: block;
+}
+
+@keyframes smooth_appear {
+    0%{
+        opacity: 0;
+    }
+    100%{
+        opacity: 100%;
+    }
+}
+
+.captcha-qst span, .captcha-qst span::before{
+    content: "";
+    display: block;
+    position: absolute;
+    border-top: 10px solid transparent;
+    border-bottom: 10px solid transparent;
+    border-right: 10px solid #f1f1f1;
+}
+
+.captcha-qst span{
+    border-right: 10px solid #c3c3c3;
+    top: 72px;
+    left: -10px;
+}
+
+.captcha-qst span::before {
+    top: -10px;
+    left: 2px;
+    border-right: 10px solid #f1f1f1;
+}
+
+.cpch-container-style .test-title {
     background-color: #4185de;
     color: white;
     padding: 10px 20px;
@@ -89,22 +148,22 @@
     font-size: 20px;
 }
 
-.cpch-container-style .button{
+.cpch-container-style .button {
     border-radius: 2px;
     outline: none;
     border: none;
     transition: 0.2s;
 }
 
-.cpch-container-style  .button:hover{
+.cpch-container-style .button:hover {
     cursor: pointer;
 }
 
-.cpch-container-style  .button:active{
+.cpch-container-style .button:active {
     transform: scale(0.9);
 }
 
-.cpch-container-style .blue-button{
+.cpch-container-style .blue-button {
     border-radius: 2px;
     padding: 8px 20px;
     font-size: 18px;
@@ -112,42 +171,43 @@
     color: white;
 }
 
-.cpch-container-style .button-with-icon{
+.cpch-container-style .button-with-icon {
     border-radius: 2px;
     padding: 0;
     background-color: transparent;
     margin-left: 15px;
 }
 
-.cpch-container-style .button-with-icon img{
+.cpch-container-style .button-with-icon img {
     width: 30px;
     margin: 5px;
 }
-.cpch-container-style .test-control-container{
+
+.cpch-container-style .test-control-container {
     display: flex;
     align-items: center;
     justify-content: space-between;
- }
+}
 
- .cpch-container-style .test-container .test-imag-container{
+.cpch-container-style .test-container .test-imag-container {
     background-color: #e7e7e7;
     border-radius: 2px;
     color: #626262;
     padding: 5px;
     margin: 5px 0;
- }
+}
 
- .cpch-container-style .test-container .test-imag-container img{
+.cpch-container-style .test-container .test-imag-container img {
     margin: 0 auto;
     display: block;
- }
+}
 
- .cpch-container-style .test-container .test-imag-container {
+.cpch-container-style .test-container .test-imag-container {
     margin: 0 auto;
     display: block;
- }
+}
 
- .cpch-container-style .test-container .test-response {
+.cpch-container-style .test-container .test-response {
     outline: none;
     display: block;
     font-size: 19px;
@@ -157,5 +217,91 @@
     color: #626262;
     border: 1px solid #a8a8a8;
     box-sizing: border-box;
-    
- }
+
+}
+
+.error-message {
+    font-size: 15px;
+    color: #ff4c4c;
+    text-align: center;
+}
+
+/*----------------spinner---------------*/
+
+.loader {
+    border-radius: 50%;
+    display: inline-block;
+    width: 45px;
+    height: 45px;
+    position: relative;
+    border: 3px solid;
+    border-color: #d2d2d2 #d2d2d2 transparent transparent;
+    box-sizing: border-box;
+    animation: rotation 1s linear infinite;
+  }
+  
+  .loader::after,
+  .loader::before {
+    content: '';  
+    box-sizing: border-box;
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: 0;
+    bottom: 0;
+    margin: auto;
+    border: 3px solid;
+    border-color: transparent transparent #139e1c #139e1c;
+    width: 37px;
+    height: 37px;
+    border-radius: 50%;
+    box-sizing: border-box;
+    animation: rotationBack 0.5s linear infinite;
+    transform-origin: center center;
+  }
+      
+  @keyframes rotation {
+    0% {
+      transform: rotate(0deg);
+    }
+    100% {
+      transform: rotate(360deg);
+    }
+  } 
+  @keyframes rotationBack {
+    0% {
+      transform: rotate(0deg);
+    }
+    100% {
+      transform: rotate(-360deg);
+    }
+  }
+      
+
+  .dot-loader {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    display: block;
+    margin:15px auto;
+    position: relative;
+    color: #139e1c;
+    box-sizing: border-box;
+    animation: animloader 1s linear infinite alternate;
+  }
+  
+  @keyframes animloader {
+    0% {
+      box-shadow: -28px -12px ,  -10px 0,  10px 0, 28px 0;
+    }
+    33% {
+      box-shadow: -28px 0px, -10px -12px,  10px 0, 28px 0;
+    }
+    66% {
+      box-shadow: -28px 0px , -10px 0, 10px -12px, 28px 0;
+    }
+    100% {
+      box-shadow: -28px 0 , -10px 0, 10px 0 , 28px -12px;
+    }
+  }
+  
