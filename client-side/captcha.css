@@ -13,7 +13,7 @@
     width: 600px;
 }
 
-.capatcha-utility{
+.captcha-utility{
     position: relative;
 }
 
@@ -30,7 +30,26 @@
 
 .check-mark{
     width: 40px;
-    margin: 10px
+    margin: 10px;
+    position: relative;
+    width: 35px;
+    transform: rotate(7deg);
+    top: -4px;
+}
+
+.errorCaptcha{
+    color: #ff0000;
+    text-align: center;
+    padding: 0 0 0 48px;
+}
+
+
+
+.errorCaptcha span{
+    font-size: 40px;
+    position: absolute;
+    top: 14px;
+    left: 8px;
 }
 
 .captcha-container {
@@ -52,7 +71,7 @@
 }
 
 .captcha-container .captcha-sub-container .status-sign {
-    width: 50px;
+    width: 60px;
 }
 
 .captcha-container .captcha-sub-container .status-sign .checkbox {
@@ -119,22 +138,23 @@
     }
 }
 
-.captcha-qst span, .captcha-qst span::before{
+.captcha-qst .arrow, .captcha-qst .arrow::before{
     content: "";
     display: block;
     position: absolute;
     border-top: 10px solid transparent;
     border-bottom: 10px solid transparent;
-    border-right: 10px solid #f1f1f1;
 }
 
-.captcha-qst span{
+.captcha-qst .arrow{
     border-right: 10px solid #c3c3c3;
     top: 72px;
     left: -10px;
 }
 
-.captcha-qst span::before {
+
+
+.captcha-qst .arrow::before {
     top: -10px;
     left: 2px;
     border-right: 10px solid #f1f1f1;
@@ -198,7 +218,7 @@
 }
 
 .cpch-container-style .test-container .test-imag-container img {
-    margin: 0 auto;
+    margin: 5px auto;
     display: block;
 }
 
@@ -220,10 +240,16 @@
 
 }
 
-.error-message {
+.captcha-qst .test-interface-message{
+    height: 20px;
+    margin-top: 10px;
+}
+
+.cpch-container-style .test-container .error-message {
     font-size: 15px;
     color: #ff4c4c;
     text-align: center;
+    margin: 0;
 }
 
 /*----------------spinner---------------*/
@@ -279,11 +305,12 @@
       
 
   .dot-loader {
-    width: 8px;
-    height: 8px;
+    width: 5px;
+    height: 5px;
     border-radius: 50%;
     display: block;
-    margin:15px auto;
+    top: 8px;
+    margin: 0 auto;
     position: relative;
     color: #139e1c;
     box-sizing: border-box;
@@ -292,16 +319,16 @@
   
   @keyframes animloader {
     0% {
-      box-shadow: -28px -12px ,  -10px 0,  10px 0, 28px 0;
+      box-shadow: -15px -12px ,  -5px 0,  5px 0, 15px 0;
     }
     33% {
-      box-shadow: -28px 0px, -10px -12px,  10px 0, 28px 0;
+      box-shadow: -15px 0px, -5px -12px,  5px 0, 15px 0;
     }
     66% {
-      box-shadow: -28px 0px , -10px 0, 10px -12px, 28px 0;
+      box-shadow: -15px 0px , -5px 0, 5px -12px, 15px 0;
     }
     100% {
-      box-shadow: -28px 0 , -10px 0, 10px 0 , 28px -12px;
+      box-shadow: -15px 0 , -5px 0, 5px 0 , 15px -12px;
     }
   }
   

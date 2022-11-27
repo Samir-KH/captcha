@@ -11,7 +11,11 @@
 
 <body>
 
-    <div class="container">
+    <div class="container" id="x66sx">
+
+    </div>
+
+    <!--<div class="container">
         <div class="capatcha-utility">
             <div class="captcha-container cpch-container-style">
                 <div class="captcha-sub-container">
@@ -87,9 +91,9 @@
             </div>
         </div>
 
-        <span class="dot-loader"></span>
+        
 
-        <!--div class="container">
+        div class="container">
         <div class="captcha-container">
             <div class="captcha-sub-container">
                 <div class="status-sign">
@@ -104,7 +108,12 @@
         </div>
     </div-->
 
-        <script difer src="captcha.js"></script>
+        <script src="captcha.js"></script>
+        <script>
+            const container = document.getElementById("x66sx")
+            const captchaFactory = CaptchaFactory.getInstance()
+            const cap = captchaFactory.createCaptcha(container);
+        </script>
 </body>
 
 </html>
