@@ -82,7 +82,7 @@ const CaptchaFactory = (function () {
         '                    <div class="test-container">' +
         '                        <div class="test-imag-container">' +
         '                            <p>Type de code contained in this image</p>' +
-        '                            <img src="./test.png">' +
+        '                            <img src="http://localhost:8080/captcha/agent/test.image?name=test_1669738562225570.png">' +
         '                        </div>' +
         '                        <div class="test-interface-message">' +
         '                        </div>' +
