@@ -1,20 +1,21 @@
 package ma.m2m.captcha.controller;
 
-import ma.m2m.captcha.exception.ImageNotFoundException;
-import ma.m2m.captcha.exception.NoCaptchaTestIsStartedException;
+import ma.m2m.captcha.exception.*;
 import ma.m2m.captcha.MXCaptchaAgent;
-import ma.m2m.captcha.exception.HostNotFoundException;
-import ma.m2m.captcha.exception.ValidationException;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import javax.activation.MimetypesFileTypeMap;
 import javax.servlet.http.HttpServletRequest;
+
 import ma.m2m.captcha.bean.*;
+
 import javax.ws.rs.*;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import java.io.File;
+import java.util.HashMap;
+import java.util.Map;
 
 @Path("/agent")
 public class CaptchaAgentController {
@@ -51,6 +52,12 @@ public class CaptchaAgentController {
             responseError.setSubject(captchaTestRequest);
             responseError.setMessage(e.getMessage());
             throw new WebApplicationException(Response.status(Response.Status.BAD_REQUEST).entity(responseError).build());
+        } catch (NullCaptchaTestRequest e) {
+            ResponseError responseError = new ResponseError();
+            responseError.setSubject(captchaTestRequest);
+            responseError.setMessage("Null captcha test request");
+            throw new WebApplicationException(Response.status(Response.Status.BAD_REQUEST).entity(responseError).build());
+
         }
 
     }
@@ -58,7 +65,7 @@ public class CaptchaAgentController {
     @GET
     @Path("/test.image")
     @Produces({"images/*", "application/json"})
-    public Response getTestImage(@QueryParam("name") String imageName){
+    public Response getTestImage(@QueryParam("name") String imageName) {
         try {
             File imageFile = mxCaptchaAgent.getImage(imageName);
             String mimeType = new MimetypesFileTypeMap().getContentType(imageFile);
@@ -75,22 +82,41 @@ public class CaptchaAgentController {
     @GET
     @Path("/test.qst.reset")
     @Produces(MediaType.APPLICATION_JSON)
-    public Response resetTestQst(@Context HttpServletRequest httpServletRequest){
+    public Response resetTestQst(@Context HttpServletRequest httpServletRequest) {
         mxCaptchaAgent.passRequest(httpServletRequest);
-        try{
+        try {
             mxCaptchaAgent.resetTestQst();
             CaptchaTest captchaTest = mxCaptchaAgent.getCurrentCaptchaTest();
             CaptchaTestQst captchaTestQst = captchaTest.getCaptchaTestQst();
             CaptchTestQstResponse captchaTestResponse = captchaTestQstResponseDTO(captchaTest, captchaTestQst);
             return Response.ok(captchaTestResponse).build();
-        }catch (NoCaptchaTestIsStartedException e){
+        } catch (NoCaptchaTestIsStartedException e) {
             ResponseError responseError = new ResponseError();
             responseError.setMessage(e.getMessage());
             throw new WebApplicationException(Response.status(Response.Status.BAD_REQUEST).entity(responseError).build());
         }
     }
 
+    @GET
+    @Path("/test.qst.response")
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response captchaTestQstResponse(@Context HttpServletRequest httpServletRequest, @QueryParam("response") String userResponse) {
+        mxCaptchaAgent.passRequest(httpServletRequest);
+        try {
+            if (mxCaptchaAgent.isResponseCorrect(userResponse)){
+                String hashedToken = mxCaptchaAgent.responseToTestQst();
+                Map<String, String> response = new HashMap<>();
+                response.put("hashedToken", hashedToken);
+                return Response.ok(response).build();
+            }
+            return resetTestQst(httpServletRequest);
+        } catch (NoCaptchaTestIsStartedException e) {
+            ResponseError responseError = new ResponseError();
+            responseError.setMessage(e.getMessage());
+            throw new WebApplicationException(Response.status(Response.Status.BAD_REQUEST).entity(responseError).build());
 
+        }
+    }
 
     private CaptchTestQstResponse captchaTestQstResponseDTO(CaptchaTest captchaTest, CaptchaTestQst captchaTestQst) {
         CaptchTestQstResponse captchaTestResponse = new CaptchTestQstResponse();
@@ -99,6 +125,8 @@ public class CaptchaAgentController {
         captchaTestResponse.setImageName(captchaTestQst.getTestImageName());
         return captchaTestResponse;
     }
+
+
 
 
 }

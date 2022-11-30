@@ -85,12 +85,12 @@
     transition: 0.2s;
 }
 
-.captcha-container .captcha-sub-container .status-sign .checkbox:hover {
+.captcha-container .captcha-sub-container .status-sign .active-checkbox:hover {
     transform: scale(1.1);
     cursor: pointer;
 }
 
-.captcha-container .captcha-sub-container .status-sign .checkbox:active {
+.captcha-container .captcha-sub-container .status-sign .active-checkbox:active {
     transform: scale(0.9);
 }
 
@@ -175,11 +175,11 @@
     transition: 0.2s;
 }
 
-.cpch-container-style .button:hover {
+.cpch-container-style .button-active:hover {
     cursor: pointer;
 }
 
-.cpch-container-style .button:active {
+.cpch-container-style .button-active:active {
     transform: scale(0.9);
 }
 
@@ -214,6 +214,7 @@
     border-radius: 2px;
     color: #626262;
     padding: 5px;
+    min-height: 252px;
     margin: 5px 0;
 }
 

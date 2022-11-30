@@ -1,15 +1,13 @@
 package ma.m2m.captcha;
 
+import com.google.common.hash.Hashing;
 import ma.m2m.captcha.bean.CaptchaTest;
 import ma.m2m.captcha.bean.CaptchaTestQst;
 import ma.m2m.captcha.bean.CaptchaTestRequest;
 import ma.m2m.captcha.bean.Host;
 import ma.m2m.captcha.dao.HostDao;
+import ma.m2m.captcha.exception.*;
 import ma.m2m.captcha.test.CaptchaTestQstDirector;
-import ma.m2m.captcha.exception.HostNotFoundException;
-import ma.m2m.captcha.exception.ImageNotFoundException;
-import ma.m2m.captcha.exception.NoCaptchaTestIsStartedException;
-import ma.m2m.captcha.exception.ValidationException;
 import ma.m2m.captcha.test.TestImageManager;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -17,6 +15,8 @@ import org.springframework.stereotype.Component;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import java.io.File;
+import java.nio.charset.StandardCharsets;
+import java.security.MessageDigest;
 import java.util.Random;
 
 @Component
@@ -24,7 +24,7 @@ public class MXCaptchaAgent {
 
 
     public static final String TEXT_OBJECT = "test_object";
-    public static final int REQUEST_TOKEN_LENGTH = 10;
+    public static final int REQUEST_TOKEN_LENGTH = 2;
     private HttpSession session;
     private final HostDao hostDao;
 
@@ -44,12 +44,13 @@ public class MXCaptchaAgent {
         this.session = httpServletRequest.getSession(true);;
     }
     // user should only pass one test, so when a startTest request is received we override the old one
-    public CaptchaTest startCaptchaTest(CaptchaTestRequest captchaTestRequest) throws HostNotFoundException, ValidationException {
+    public CaptchaTest startCaptchaTest(CaptchaTestRequest captchaTestRequest) throws HostNotFoundException, ValidationException, NullCaptchaTestRequest {
         isSessionConfigured();
-        if (validateHostIdentifier(captchaTestRequest.getHostIdentifier())){
+        if ( captchaTestRequest == null) throw new NullCaptchaTestRequest();
+        if (!isHostIdentifierValid(captchaTestRequest.getHostIdentifier())){
             throw new HostNotFoundException(String.format("identifier '%s' not found", captchaTestRequest.getHostIdentifier()));
         }
-        if (validateRequestTokenLayout(captchaTestRequest.getRequestToken())){
+        if (!isRequestTokenLayoutValid(captchaTestRequest.getRequestToken())){
             throw new ValidationException(String.format("Invalid request token length '%s': it should be 10 character", captchaTestRequest.getRequestToken()));
         }
 
@@ -85,12 +86,12 @@ public class MXCaptchaAgent {
         return captchaTestQst;
     }
 
-    private boolean validateRequestTokenLayout(String requestToken) {
+    private boolean isRequestTokenLayoutValid(String requestToken) {
         return requestToken.length() == REQUEST_TOKEN_LENGTH;
     }
 
-    private boolean validateHostIdentifier(String hostIdentifier) {
-        return getHostByHostIdentifier(hostIdentifier) == null;
+    private boolean isHostIdentifierValid(String hostIdentifier) {
+        return getHostByHostIdentifier(hostIdentifier) != null;
     }
 
     private Host getHostByHostIdentifier(String hostIdentifier) {
@@ -121,4 +122,34 @@ public class MXCaptchaAgent {
         currentCaptchaTest.setCaptchaTestQst(captchaTestQst);
         session.setAttribute(TEXT_OBJECT, currentCaptchaTest);
     }
+
+    public boolean isResponseCorrect(String userResponse) throws NoCaptchaTestIsStartedException {
+        isSessionConfigured();
+        CaptchaTest currentCaptchaTest = getCurrentCaptchaTest();
+        CaptchaTestQst captchaTestQst = currentCaptchaTest.getCaptchaTestQst();
+        if (!captchaTestQst.getExpectedAnswer().equals(userResponse)){
+            return false;
+        }
+        return true;
+    }
+
+
+
+    public String responseToTestQst() throws NoCaptchaTestIsStartedException {
+        isSessionConfigured();
+        CaptchaTest captchaTest = getCurrentCaptchaTest();
+        String requestToken = captchaTest.getRequestToken();
+        Host host = hostDao.getByHostIdentifier(captchaTest.getHostIdentifier());
+        session.invalidate();
+        return TokenHashing.generateHash(requestToken,host.getSecretKey());
+    }
+
+    public static  void  removeCaptchaTestQstImage(TestImageManager testImageManager,HttpSession session){
+        CaptchaTest captchaTest = (CaptchaTest) session.getAttribute(TEXT_OBJECT);
+        if (captchaTest != null){
+            CaptchaTestQst currentCaptchaTestQst = captchaTest.getCaptchaTestQst();
+            testImageManager.removeImage(currentCaptchaTestQst.getTestImageName());
+        }
+    }
+
 }

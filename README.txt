@@ -1,0 +1,1 @@
+Because of the CORS policy, run client side inside a web server to ensure that the communication goes as intended.

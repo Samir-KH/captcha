@@ -110,9 +110,15 @@
 
         <script src="captcha.js"></script>
         <script>
+            const mxCaptchaAgentUrl = "http://localhost:8080"
+            testRequest = {
+                hostIdentifier: "Test-captcha-server",
+                requestToken: "hk"
+            }
             const container = document.getElementById("x66sx")
-            const captchaFactory = CaptchaFactory.getInstance()
+            const captchaFactory = CaptchaFactory.getInstance(mxCaptchaAgentUrl)
             const cap = captchaFactory.createCaptcha(container);
+            cap.setTestRequest(testRequest)
         </script>
 </body>
 

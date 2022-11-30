@@ -34,6 +34,7 @@ public class DistortedImageTestQstBuilder implements CaptchaTestQstBuilder {
 
     public void answerStep() {
         this.answer = generateRandomString();
+        this.captchaTestQst.setExpectedAnswer(answer);
     }
 
     public void imageStep() {
