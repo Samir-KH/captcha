@@ -25,7 +25,7 @@ function Captcha(id, testId, capchaUtilityDomElement, captchaTestElement, mxCapt
         }(),
         testRequest: null,
         test: null,
-        captchabject: this,
+        captchaObject: this,
         startTestHttp: function () {
             if (this.testRequest == null
                 || !this.testRequest.hasOwnProperty("hostIdentifier")
@@ -34,9 +34,7 @@ function Captcha(id, testId, capchaUtilityDomElement, captchaTestElement, mxCapt
             this.xhr.onreadystatechange = () => {
                 if (this.xhr.readyState == 4 && this.xhr.status == 200) {
                     this.test = JSON.parse(this.xhr.responseText)
-                    this.captchabject.updateCaptchaTestInterface(this.test, ()=>{
-                        this.captchabject.testInterfaceMessage.innerHTML = ""
-                    });
+                    this.captchaObject.updateCaptchaTestInterface(this.test, this.captchaObject.closeTestInterfaceLoader);
                 }
                 else if (this.xhr.readyState == 4 && this.xhr.status == 503) {
                     console.log("unavailale")
@@ -48,7 +46,7 @@ function Captcha(id, testId, capchaUtilityDomElement, captchaTestElement, mxCapt
 
                 }
             }
-            this.xhr.open("POST", this.captchabject.mxCaptchaAgentUrl + path)
+            this.xhr.open("POST", this.captchaObject.mxCaptchaAgentUrl + path)
             this.xhr.setRequestHeader("Content-Type", "application/json");
             this.xhr.send(JSON.stringify(this.testRequest))
         },
@@ -57,9 +55,7 @@ function Captcha(id, testId, capchaUtilityDomElement, captchaTestElement, mxCapt
             this.xhr.onreadystatechange = () => {
                 if (this.xhr.readyState == 4 && this.xhr.status == 200) {
                     this.test = JSON.parse(this.xhr.responseText)
-                    this.captchabject.updateCaptchaTestInterface(this.test, ()=>{
-                        this.captchabject.testInterfaceMessage.innerHTML = ""
-                    });
+                    this.captchaObject.updateCaptchaTestInterface(this.test, this.captchaObject.closeTestInterfaceLoader);
                 }
                 else if (this.xhr.readyState == 4 && this.xhr.status == 503) {
                     console.log("unavailale")
@@ -71,7 +67,7 @@ function Captcha(id, testId, capchaUtilityDomElement, captchaTestElement, mxCapt
 
                 }
             }
-            this.xhr.open("GET", this.captchabject.mxCaptchaAgentUrl + path)
+            this.xhr.open("GET", this.captchaObject.mxCaptchaAgentUrl + path)
             this.xhr.setRequestHeader("Content-Type", "application/json");
             this.xhr.send(JSON.stringify(this.testRequest))
         },
@@ -81,13 +77,13 @@ function Captcha(id, testId, capchaUtilityDomElement, captchaTestElement, mxCapt
                 if (this.xhr.readyState == 4 && this.xhr.status == 200) {
                     let reponse = JSON.parse(this.xhr.responseText)
                     if (this.containHashToken(reponse)) {
-                        this.captchabject.closeTest()
-                        this.captchabject.setCaptchaSpinner()
+                        this.captchaObject.closeTest()
+                        this.captchaObject.setCaptchaSpinner()
                         console.log(reponse.hashedToken);
-                        setTimeout(this.captchabject.setCaptchaVerified, 1000)
+                        setTimeout(this.captchaObject.setCaptchaVerified, 1000)
                     }else{
-                        this.captchabject.updateCaptchaTestInterface(reponse, ()=>{
-                            this.captchabject.setTestInterMessageError("Wrong response, Try again !")
+                        this.captchaObject.updateCaptchaTestInterface(reponse, ()=>{
+                            this.captchaObject.setTestInterMessageError("Wrong response, Try again !")
                         });
                         
                     }
@@ -103,7 +99,7 @@ function Captcha(id, testId, capchaUtilityDomElement, captchaTestElement, mxCapt
                 }
                 
             }
-            this.xhr.open("GET", this.captchabject.mxCaptchaAgentUrl + path+userResponse)
+            this.xhr.open("GET", this.captchaObject.mxCaptchaAgentUrl + path+userResponse)
             this.xhr.setRequestHeader("Content-Type", "application/json");
             this.xhr.send()
         },
@@ -145,6 +141,9 @@ function Captcha(id, testId, capchaUtilityDomElement, captchaTestElement, mxCapt
     }
     this.setErrorMessageInCaptcha = (message) => {
         this.captchaSubContainer.innerHTML = '<p class="errorCaptcha">' + message + '</p>'
+    }
+    this.closeTestInterfaceLoader = ()=>{
+        setTimeout(()=>{this.testInterfaceMessage.innerHTML = ""}, 500)
     }
     this.disableTestInterfaceButton = () => {
         this.verifyButton.disabled = true
