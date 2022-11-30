@@ -15,20 +15,17 @@ import org.springframework.web.filter.DelegatingFilterProxy;
 import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
 import java.io.File;
-import java.net.MalformedURLException;
 
 @Order(Ordered.HIGHEST_PRECEDENCE)
 @Configuration
 public class ApplicationContextInitializer implements WebApplicationInitializer {
 
-    private static  String TEST_IMAGES_FOLDER_PATH;
     private  File testImagesFolder;
 
     public void onStartup(ServletContext servletContext) throws ServletException {
-        TEST_IMAGES_FOLDER_PATH = servletContext.getRealPath("/WEB-INF/test");
+        String TEST_IMAGES_FOLDER_PATH = servletContext.getRealPath("/WEB-INF/test");
         testImagesFolder = new File(TEST_IMAGES_FOLDER_PATH);
         AnnotationConfigWebApplicationContext context = new AnnotationConfigWebApplicationContext();
-        DelegatingFilterProxy corsFilterProxy = new DelegatingFilterProxy("corsFilter");
         servletContext.addListener(new ContextLoaderListener(context));
         servletContext.addListener(new CaptchaSessionListener(new TestImageManager(testImagesFolder)));
         servletContext.setInitParameter("contextConfigLocation", "ma.m2m.captcha");
