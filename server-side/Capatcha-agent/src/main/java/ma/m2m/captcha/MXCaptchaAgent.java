@@ -15,8 +15,6 @@ import org.springframework.stereotype.Component;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import java.io.File;
-import java.nio.charset.StandardCharsets;
-import java.security.MessageDigest;
 import java.util.Random;
 
 @Component
@@ -48,7 +46,7 @@ public class MXCaptchaAgent {
         isSessionConfigured();
         if ( captchaTestRequest == null) throw new NullCaptchaTestRequest();
         if (!isHostIdentifierValid(captchaTestRequest.getHostIdentifier())){
-            throw new HostNotFoundException(String.format("identifier '%s' not found", captchaTestRequest.getHostIdentifier()));
+            throw new HostNotFoundException(String.format("Identifier '%s' not found", captchaTestRequest.getHostIdentifier()));
         }
         if (!isRequestTokenLayoutValid(captchaTestRequest.getRequestToken())){
             throw new ValidationException(String.format("Invalid request token length '%s': it should be 10 character", captchaTestRequest.getRequestToken()));
@@ -102,7 +100,11 @@ public class MXCaptchaAgent {
         if (this.session == null) throw new RuntimeException("Session is not set: You must pass the httpServletRequest object to retrieve the session");
     }
 
-    public File getImage(String imageName) throws ImageNotFoundException {
+    public File getImage(String imageName) throws ImageNotFoundException, NoCaptchaTestIsStartedException {
+        isSessionConfigured();
+        CaptchaTest captchaTest = getCurrentCaptchaTest();
+        if (!captchaTest.getCaptchaTestQst().getTestImageName().equals(imageName))
+            throw new ImageNotFoundException("The requested image doesn't correspond to the current test");
         return testImageManager.readImage(imageName);
     }
 

@@ -65,7 +65,8 @@ public class CaptchaAgentController {
     @GET
     @Path("/test.image")
     @Produces({"images/*", "application/json"})
-    public Response getTestImage(@QueryParam("name") String imageName) {
+    public Response getTestImage(@QueryParam("name") String imageName, @Context HttpServletRequest httpServletRequest) {
+        mxCaptchaAgent.passRequest(httpServletRequest);
         try {
             File imageFile = mxCaptchaAgent.getImage(imageName);
             String mimeType = new MimetypesFileTypeMap().getContentType(imageFile);
@@ -75,6 +76,10 @@ public class CaptchaAgentController {
             responseError.setSubject(imageName);
             responseError.setMessage(e.getMessage());
             throw new WebApplicationException(Response.status(Response.Status.NOT_FOUND).entity(responseError).build());
+        } catch (NoCaptchaTestIsStartedException e) {
+            ResponseError responseError = new ResponseError();
+            responseError.setMessage(e.getMessage());
+            throw new WebApplicationException(Response.status(Response.Status.BAD_REQUEST).entity(responseError).build());
         }
 
     }

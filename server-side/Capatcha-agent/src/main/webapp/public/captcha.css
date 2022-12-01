@@ -29,15 +29,21 @@
 .errorCaptcha{
     color: #ff0000;
     text-align: center;
+    width: 145px;
+    overflow-wrap: unset;
     padding: 0 0 0 48px;
+    text-overflow: unset;
+    white-space: normal;
+    height: 31px;
+    overflow: hidden;
 }
 
 
 
 .errorCaptcha span{
-    font-size: 40px;
+    font-size: 30px;
     position: absolute;
-    top: 14px;
+    top: 13px;
     left: 8px;
 }
 

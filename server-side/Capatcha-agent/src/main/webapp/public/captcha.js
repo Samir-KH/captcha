@@ -1,10 +1,18 @@
-HttpClient = function(captchaObject) {
-    this.xhr =  new XMLHttpRequest()
+HttpClient = function (captchaObject) {
+    this.xhr = new XMLHttpRequest()
     this.xhr.withCredentials = true
     this.testRequest = null
     this.test = null
     this.captchaObject = captchaObject
-    this.startTestHttp =  ()=>{
+    this.handleHttpResponse = (status) => {
+        this.captchaObject.closeTest()
+        if (500 <= this.xhr.status  && this.xhr.status <= 511) {
+            this.captchaObject.setErrorMessageInCaptcha("Server side error, please reload page")
+        } else if (400 <= this.xhr.status && this.xhr.status  <= 451) {
+            this.captchaObject.setErrorMessageInCaptcha("Bad request, please reload page")
+        }
+    }
+    this.startTestHttp = () => {
         if (this.testRequest === null
             || !this.testRequest.hasOwnProperty("hostIdentifier")
             || !this.testRequest.hasOwnProperty("requestToken")) throw "Please, set a valid test request object"
@@ -13,12 +21,8 @@ HttpClient = function(captchaObject) {
             if (this.xhr.readyState === 4 && this.xhr.status === 200) {
                 this.test = JSON.parse(this.xhr.responseText)
                 this.captchaObject.updateCaptchaTestInterface(this.test, this.captchaObject.closeTestInterfaceLoader);
-            } else if (this.xhr.readyState === 4 && this.xhr.status === 503) {
-                console.log("unavailale")
-            } else if (this.xhr.readyState === 4 && this.xhr.status === 400) {
-
-            } else {
-
+            } else if (this.xhr.readyState === 4) {
+                this.handleHttpResponse(this.xhr.status)
             }
         }
         this.xhr.open("POST", this.captchaObject.mxCaptchaAgentUrl + path)
@@ -32,14 +36,10 @@ HttpClient = function(captchaObject) {
                 this.test = JSON.parse(this.xhr.responseText)
                 this.captchaObject.updateCaptchaTestInterface(this.test, () => {
                     this.captchaObject.setTestInterfaceLoading()
-                    setTimeout(this.captchaObject.closeTestInterfaceLoader, 900)
+                    setTimeout(this.captchaObject.closeTestInterfaceLoader, 600)
                 });
-            } else if (this.xhr.readyState === 4 && this.xhr.status === 503) {
-                console.log("unavailale")
-            } else if (this.xhr.readyState === 4 && this.xhr.status === 400) {
-                console.log(this.xhr.responseText)
-            } else {
-
+            } else if (this.xhr.readyState === 4) {
+                this.handleHttpResponse(this.xhr.status)
             }
         }
         this.xhr.open("GET", this.captchaObject.mxCaptchaAgentUrl + path)
@@ -59,7 +59,7 @@ HttpClient = function(captchaObject) {
                     input.setAttribute("value", response["hashedToken"])
                     input.setAttribute("label", "Captcha hashed token")
                     input.style.display = "none"
-                    if (this.captchaObject.onCaptchaVerifiedCallback !== null) this.captchaObject.onCaptchaVerifiedCallback()
+                    if (this.captchaObject.onCaptchaVerifiedCallback) this.captchaObject.onCaptchaVerifiedCallback()
                     this.captchaObject.capchaUtilityDomElement.appendChild(input)
                     setTimeout(this.captchaObject.setCaptchaVerified, 1000)
                 } else {
@@ -71,12 +71,8 @@ HttpClient = function(captchaObject) {
                     }, 700)
 
                 }
-            } else if (this.xhr.readyState === 4 && this.xhr.status === 503) {
-                console.log("unavailale")
-            } else if (this.xhr.readyState === 4 && this.xhr.status === 400) {
-
-            } else {
-                console.log(this.xhr.responseText)
+            } else if (this.xhr.readyState === 4) {
+                this.handleHttpResponse(this.xhr.status)
             }
 
         }
@@ -84,12 +80,14 @@ HttpClient = function(captchaObject) {
         this.xhr.setRequestHeader("Content-Type", "application/json");
         this.xhr.send()
     }
-    this.containHashToken = (reponse) => {
-        return reponse.hasOwnProperty("hashedToken")
+    this.containHashToken = (response) => {
+        return response.hasOwnProperty("hashedToken")
     }
 }
-function Captcha(id, testId, captchaUtilityDomElement, captchaTestElement, mxCaptchaAgentUrl, onCaptchaVerifiedCallback) {
+
+function Captcha(id, captchaUtilityDomElement, captchaTestElement, mxCaptchaAgentUrl, onCaptchaVerifiedCallback) {
     this.mxCaptchaAgentUrl = mxCaptchaAgentUrl
+    this.onCaptchaVerifiedCallback = onCaptchaVerifiedCallback
     this.publicRessourcesURL = mxCaptchaAgentUrl + "/public"
     this.testIsOpen = false
     this.captchaTestElement = captchaTestElement
@@ -103,7 +101,6 @@ function Captcha(id, testId, captchaUtilityDomElement, captchaTestElement, mxCap
     this.testInterfaceMessage = captchaTestElement.querySelector(".captcha-qst div.test-container > div.test-interface-message")
     this.testInterfaceMessageImg = captchaTestElement.querySelector(".captcha-qst div.test-container > div.test-container > div.test-imag-container > img")
     this.testInterfaceMessageImgLabel = captchaTestElement.querySelector(".captcha-qst div.test-container > div.test-container > div.test-imag-container p")
-    this.onCaptchaVerifiedCallback = onCaptchaVerifiedCallback
     this.httpClient = new HttpClient(this)
 
     this.updateCaptchaTestInterface = (test, captchaInterfaceMessageCallback) => {
@@ -134,7 +131,7 @@ function Captcha(id, testId, captchaUtilityDomElement, captchaTestElement, mxCap
 
     }
     this.setErrorMessageInCaptcha = (message) => {
-        this.captchaSubContainer.innerHTML = '<p class="errorCaptcha">' + message + '</p>'
+        this.captchaSubContainer.innerHTML = '<p class="errorCaptcha"><span>&#9888;</span>' + message + '</p>'
     }
     this.closeTestInterfaceLoader = () => {
         this.testInterfaceMessage.innerHTML = ""
@@ -171,7 +168,7 @@ function Captcha(id, testId, captchaUtilityDomElement, captchaTestElement, mxCap
             this.setTestInterMessageError("Please enter the answer !")
             setTimeout(() => {
                 this.setTestInterMessageError("")
-            }, 1000)
+            }, 700)
         } else {
             this.httpClient.responseToTestHttp(userResponse)
             this.setTestInterfaceLoading();
@@ -218,14 +215,14 @@ const CaptchaFactory = (function () {
 
     function createInstance(mxCaptchaAgentUrl) {
         return {
-            createCaptcha: function (domContainer, testId, onCaptchaVerifiedCallback = null) {
+            createCaptcha: function (domContainer, onCaptchaVerifiedCallback = null) {
                 lastCaptchaId++
                 let captchaDom = domParser.parseFromString(captchaUtility, "text/html").body.firstChild;
                 let captchaTestInterfaceDom = domParser.parseFromString(captchaTestInterface, "text/html").body.firstChild;
                 captchaDom.id = idPreFix + lastCaptchaId
                 domContainer.innerHTML = ""
                 domContainer.appendChild(captchaDom)
-                return new Captcha(lastCaptchaId, testId, captchaDom, captchaTestInterfaceDom, mxCaptchaAgentUrl, onCaptchaVerifiedCallback)
+                return new Captcha(lastCaptchaId, captchaDom, captchaTestInterfaceDom, mxCaptchaAgentUrl, onCaptchaVerifiedCallback)
             }
         }
     }
