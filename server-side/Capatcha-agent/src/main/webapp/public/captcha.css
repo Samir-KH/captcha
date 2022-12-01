@@ -51,11 +51,12 @@
     display: flex;
     justify-content: space-between;
     width: 100%;
-    margin: 2px;
+    margin: 5px auto;
     border-radius: 2px;
     max-width: 270px;
-    min-width: 240px;
+    min-width: 250px;
     position: relative;
+    padding: 2px;
 }
 
 .captcha-container .captcha-sub-container {
@@ -68,6 +69,12 @@
 
 .captcha-container .captcha-sub-container .status-sign {
     width: 55px;
+}
+
+.captcha-container .captcha-sub-container p{
+    margin: 0;
+    padding: 0;
+    color: black;
 }
 
 .captcha-container .captcha-sub-container .status-sign .checkbox {
@@ -99,6 +106,7 @@
     width: 50%;
     margin: auto;
     display: block;
+    padding: 0px;
 }
 
 .captcha-container .captcha-logo p {
@@ -159,13 +167,14 @@
 
 .cpch-container-style .test-title {
     background-color: #4185de;
-    color: white;
     padding: 8px 20px;
     border-radius: 2px;
     font-size: 17px;
 }
 .cpch-container-style .test-title p{
     margin: 10px 0;
+    margin: 9px 0;
+    color: #FFF;
 }
 .cpch-container-style .button {
     border-radius: 2px;
@@ -219,10 +228,12 @@
 .cpch-container-style .test-container .test-imag-container p {
     margin: 15px 5px;
     font-size: 15px;
+    color: #626262;
 }
 .cpch-container-style .test-container .test-imag-container img {
     margin: 5px auto;
     display: block;
+    padding: 0px;
 }
 
 .cpch-container-style .test-container .test-imag-container {
