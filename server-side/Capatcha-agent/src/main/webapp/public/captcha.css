@@ -26,15 +26,15 @@
     top: -4px;
 }
 
-.errorCaptcha{
+.captcha-container .captcha-sub-container p.errorCaptcha{
     color: #ff0000;
     text-align: center;
-    width: 145px;
+    width: 190px;
     overflow-wrap: unset;
     padding: 0 0 0 48px;
     text-overflow: unset;
     white-space: normal;
-    height: 31px;
+    height: 40px;
     overflow: hidden;
 }
 

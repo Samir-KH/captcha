@@ -22,7 +22,7 @@ public class MXCaptchaAgent {
 
 
     public static final String TEXT_OBJECT = "test_object";
-    public static final int REQUEST_TOKEN_LENGTH = 2;
+    public static final int REQUEST_TOKEN_LENGTH = 10;
     private HttpSession session;
     private final HostDao hostDao;
 

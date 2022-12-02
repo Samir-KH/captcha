@@ -4,7 +4,7 @@ public class CaptchaTestRequest {
 
     private String hostIdentifier;
 
-    private String RequestToken;
+    private String requestToken;
 
 
     public String getHostIdentifier() {
@@ -12,7 +12,7 @@ public class CaptchaTestRequest {
     }
 
     public String getRequestToken() {
-        return RequestToken;
+        return requestToken;
     }
 
     public void setHostIdentifier(String hostIdentifier) {
@@ -20,6 +20,6 @@ public class CaptchaTestRequest {
     }
 
     public void setRequestToken(String requestToken) {
-        RequestToken = requestToken;
+        this.requestToken = requestToken;
     }
 }

@@ -15,16 +15,23 @@ import org.springframework.web.filter.DelegatingFilterProxy;
 import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
 import java.io.File;
+import java.io.IOException;
 
 @Order(Ordered.HIGHEST_PRECEDENCE)
 @Configuration
 public class ApplicationContextInitializer implements WebApplicationInitializer {
 
-    private  File testImagesFolder;
+    private final String TEST_IMAGES_FOLDER_PATH = "C:\\CaptchaAgent\\test";
+    private  File testImagesFolder = new File(TEST_IMAGES_FOLDER_PATH);
+
+    public ApplicationContextInitializer() {
+        if(!testImagesFolder.exists()) {
+            testImagesFolder.mkdirs();
+        }
+    }
 
     public void onStartup(ServletContext servletContext) throws ServletException {
-        String TEST_IMAGES_FOLDER_PATH = servletContext.getRealPath("/WEB-INF/test");
-        testImagesFolder = new File(TEST_IMAGES_FOLDER_PATH);
+
         AnnotationConfigWebApplicationContext context = new AnnotationConfigWebApplicationContext();
         servletContext.addListener(new ContextLoaderListener(context));
         servletContext.addListener(new CaptchaSessionListener(new TestImageManager(testImagesFolder)));
