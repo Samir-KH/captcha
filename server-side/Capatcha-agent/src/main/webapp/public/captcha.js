@@ -243,7 +243,7 @@ const CaptchaFactory = (function () {
                     '                </div>' +
                     '                <div class="captcha-logo">' +
                     '                    <img src="' + publicResourcesURL + '/captcha-image.png" alt="Captcha">' +
-                    '                    <p>CapTcHA</p>' +
+                    '                    <p>MXCapTcHA</p>' +
                     '                </div>' +
                     '            </div>' +
                     '        </div>'

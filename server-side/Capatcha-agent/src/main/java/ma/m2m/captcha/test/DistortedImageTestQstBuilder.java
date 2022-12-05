@@ -84,15 +84,15 @@ public class DistortedImageTestQstBuilder implements CaptchaTestQstBuilder {
         Graphics2D g2d = bufferedImage.createGraphics();
         g2d.setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING, RenderingHints.VALUE_TEXT_ANTIALIAS_ON);
         AffineTransform affineTransform = new AffineTransform();
-        Font font = new Font("Kristen ITC", Font.BOLD, 80);
+        Font font = new Font("Juice ITC", Font.BOLD, 90);
         FontMetrics fontMetrics = g2d.getFontMetrics();
         Random random = new Random();
-        g2d.setColor(new Color(70, 70, 70, 190));
+        g2d.setColor(new Color(17, 17, 17, 205));
         int rotationAngle = random.nextInt(30) - 15;
         affineTransform.rotate(Math.toRadians(rotationAngle), 0, 0);
         Font rotatedFont = font.deriveFont(affineTransform);
         g2d.setFont(rotatedFont);
-        g2d.drawString(displayCode, 10, 120);
+        g2d.drawString(displayCode, 25, 120);
         g2d.dispose();
         return bufferedImage;
     }
